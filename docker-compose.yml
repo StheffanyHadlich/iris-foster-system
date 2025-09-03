@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:16
+    container_name: iris_postgres
+    environment:
+      POSTGRES_USER: iris
+      POSTGRES_PASSWORD: iris
+      POSTGRES_DB: iris_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - iris_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U iris -d iris_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  iris_pg_data:
