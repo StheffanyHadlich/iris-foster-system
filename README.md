@@ -1,84 +1,117 @@
-# **ÍRIS**
-Um sistema open-source para gerenciamento de pets, com o objetivo de cadastrar, acompanhar, gerenciar bichinhos, entre outras funções que serão adicionadas futuramente. 
-Será desenvolvido com um front-end e back-end em Next.js e um banco hospedado no PostgreSQL.
+# ÍRIS v0.1
 
-# **SETUP**
-Para inicializar o projeto, deve estar com o Docker Desktop ativado para rodar o banco de dados Postgre (Ele deve estar ligado durante o horário de estágio). Assim que isso estiver certo e clonar o projeto vá para o terminal e digite "npm run start:dev" para inicializar a API e "npx prisma studio" para visualizar todas as tabelas do banco de dados.
-Para testes de API, o URL deve ser http://localhost:3000/tabela_desejada. Os testes foram realizados no Postman mas imagino que podem ser testados em outras plataformas também.
+**ÍRIS** is an open-source pet management system that allows you to register, track, and manage your pets.
 
-# BANCO DE DADOS
-O banco de dados vai armazenar os dados principais do gerenciamento dos pets, como dados pessoais, histórico médico, processo de adoção e dos adotantes. Vai ser usado **PostgreSQL** por ser um banco de dados relacional robusto e mais utilizado para aplicações web com **Next.js**.
+It is currently under development and will have adoption features, medical history, daily tracking, and more in the future!
 
-## Entidades
+---
 
-**Pet**: Representa cada animal cadastrado
+## Clone & Setup
 
-**Adotante**: Representa quem adotou o animal, ou tem interesse
+Clone the repository and install the dependencies:
 
-**Diário**: Todos os registros sobre alimentação, medicamentos, peso, etc.
+```bash
+# Clone repository
+$ git clone https://github.com/StheffanyHadlich/iris-foster-system.git
 
-**Histórico Medico**: Todas as informações sobre consultas, diagnósticos, tratamentos, etc.
+# Acess diretory
+$ cd api
 
-**Adoção**: Entidade responsável por conectar o Pet e o Adotante
+# Initiate API
+$ npm run start:dev
 
+# Visualize db tables
+$ npx prisma studio
+```
+---
 
-## Atributos
+## DATABASE
+The database is responsible for storing information on:
+* Pets personal data
+* Medical history
+* Adoption processes
+* Adopter information
 
-**Usuario**
+Technology used: PostgreSQL
+
+---
+
+## ENTITIES
+
+**Pet**: Represents each registered animal.
+
+**Adoptor**: Represents the person who adopted the animal or is interested.
+
+**Daily**: All records regarding food, medications, weight, etc.
+
+**Medical History**: All information regarding appointments, diagnoses, treatments, etc.
+
+**Adoption**: Entity responsible for connecting the Pet and the Adopter.
+
+---
+
+## ATTRIBUTES
+
+**User**
 * id
-* nome
+* name
 * email
-* data_criacao
+* password
+* creation_date
 
 **Pets**:
 * id (PK)
-* nome
-* idade
-* tipo
-* raça
-* peso_atual
-* foto_url
-* status(disponível, em adoção, adotato)
-* data_cadastro
+* name
+* age
+* type
+* race
+* current_weight
+* photo_url
+* status (available, up for adoption, adopted)
+* registration_date
 
-**Adotante**:
+**Adopter**:
 * id (PK)
-* nome
+* name
 * email
-* telefone
-* endereco
+* telephone
+* address
 
-**Diario**:
+**Daily**:
 
 * id (PK)
 * pets_id (FK-Pets.id)
-* registro_diario
-* peso
-* notas (texto livre)
-* observacao_receita (texto livre)
+* daily_date
+* weight
+* notes (free text)
+* prescription_notes (free text)
 
-**Histórico Medico**
+**Medical History**
 * id (PK)
 * pets_id (FK-Pets.id)
-* data_consulta
-* veterinario
-* diagnostico
-* tratamento
-* receita
+* medical_date
+* veterinarian
+* diagnosis
+* treatment
+* prescription
 
-**Adoção**
-* id(PK)
+**Adoption**
+* id (PK)
 * pets_id (FK-Pets.id)
-* adotante_id (FK-Adotante.id)
-* data_inicio
-* data_fim (se houver)
-* status (ativa, finalizada, cancelada)
+* adopter_id (FK-Adoptor.id)
+* start_Date
+* end_Date (if applicable)
+* status (Active, Completed, Canceled)
 
-## Relacionamentos
-* Pet - Diario > 1:N (um pet pode ter vários registros no diário)
-* Pet - Historico Médico > 1:N (um pet pode ter várias consultas)
-* Pet - Adoção - Adotante > N:M (um pet pode estar associado a diferentes adotantes adotantes. Assim como um adotante pode ter vários pets)
+---
 
-## DER - Diagrama Entidade-Relacionamento
+## RELATIONSHIPS
+* Pet - Daily > 1:N
+* Pet - Medical History > 1:N
+* Pet - Adoption - Adopter > N:M
+
+---
+
+## ERD - ENTITY-RELATIONSHOP DIAGRAM
 
 ![Diagrama ER](./docs/der/der.png)
