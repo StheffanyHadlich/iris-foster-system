@@ -2,6 +2,10 @@
 Um sistema open-source para gerenciamento de pets, com o objetivo de cadastrar, acompanhar, gerenciar bichinhos, entre outras funções que serão adicionadas futuramente. 
 Será desenvolvido com um front-end e back-end em Next.js e um banco hospedado no PostgreSQL.
 
+# **SETUP**
+
+Para inicializar o projeto, deve estar com o Docker Desktop ativado para rodar o banco de dados Postgre (Ele deve estar ativado durante o horário de estágio). Assim que isso estiver certo e clonar o projeto vá para o terminal e digite "npm run start:dev" para inicializar a API e "npx prisma studio" para visualizar todas as tabelas do banco de dados.
+
 # BANCO DE DADOS
 O banco de dados vai armazenar os dados principais do gerenciamento dos pets, como dados pessoais, histórico médico, processo de adoção e dos adotantes. Vai ser usado **PostgreSQL** por ser um banco de dados relacional robusto e mais utilizado para aplicações web com **Next.js**.
 
