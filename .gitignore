@@ -1,0 +1,5 @@
+# ignorar a pastas do frontend
+/web/
+
+# ignorar a pasta de documentação
+/docs/
