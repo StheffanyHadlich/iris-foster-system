@@ -1,25 +1,22 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { PrismaService } from '../prisma.service';
+import { UsersRepository } from './users.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcryptjs';
-import { Prisma, User } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private usersRepository: UsersRepository) {}
 
   async create(data: CreateUserDto) {
-    const exists = await this.prisma.user.findUnique({ where: { email: data.email } });
+    const exists = await this.usersRepository.findByEmail(data.email);
     if (exists) throw new BadRequestException('Email já cadastrado');
 
     const hashed = await bcrypt.hash(data.password, 10);
-    const user = await this.prisma.user.create({
-      data: {
-        username: data.username,
-        email: data.email,
-        password: hashed,
-      },
+    const user = await this.usersRepository.create({
+      username: data.username,
+      email: data.email,
+      password: hashed,
     });
 
     const { password, ...safe } = user;
@@ -27,20 +24,15 @@ export class UsersService {
   }
 
   async findAll() {
-    return this.prisma.user.findMany({
-      select: { id: true, username: true, email: true, createdAt: true },
-    });
+    return this.usersRepository.findAll();
   }
 
   async findOne(id: number) {
-    return this.prisma.user.findUnique({
-      where: { id },
-      select: { id: true, username: true, email: true, createdAt: true },
-    });
+    return this.usersRepository.findOne(id);
   }
 
   async findByEmail(email: string) {
-    return this.prisma.user.findUnique({ where: { email } });
+    return this.usersRepository.findByEmail(email);
   }
 
   async update(id: number, data: UpdateUserDto) {
@@ -48,16 +40,11 @@ export class UsersService {
     if (payload.password) {
       payload.password = await bcrypt.hash(payload.password, 10);
     }
-    const user = await this.prisma.user.update({
-      where: { id },
-      data: payload,
-      select: { id: true, username: true, email: true, createdAt: true },
-    });
-    return user;
+    return this.usersRepository.update(id, payload);
   }
 
   async remove(id: number) {
-    await this.prisma.user.delete({ where: { id } });
+    await this.usersRepository.remove(id);
     return { removed: true };
   }
 }
